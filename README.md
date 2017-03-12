@@ -10,7 +10,7 @@ The repository contents include these files:
     
         - MySQL dump file to be imported into MySQL.  It contains knapsack problem data.
         
-    * scoreKnapsackDev.py
+    * KnapsackDev.py
     
         - Python program that contains a "stub" area to write a load_knapsack() function which chooses which items 
           to be included in a knapsack.
