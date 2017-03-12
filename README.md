@@ -6,7 +6,7 @@ course.
 
 The repository contents include these files:
 
-    * knapsack.dmp
+    * knapsack.sql
     
         - MySQL dump file to be imported into MySQL.  It contains knapsack problem data.
         
