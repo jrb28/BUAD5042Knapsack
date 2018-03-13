@@ -4,6 +4,7 @@ Spyder Editor
 """
 
 import MySQLdb as mySQL
+import time
 
 """ global MySQL settings """
 mysql_user_name = 'my_username'
@@ -111,7 +112,9 @@ for problem_id in problems:
     errors = False
     response = None
     
+    startTime = time.time()
     team_num, response = load_knapsack(items,knapsack_cap)
+    execTime = time.time() - startTime
     if isinstance(response,list):
         for this_key in response:
             if this_key in items.keys():
@@ -134,7 +137,7 @@ for problem_id in problems:
         if silent_mode:
             status = "P"+str(problem_id)+"knap_load_"
         else:
-            print "Knapsack Loaded for Problem ", str(problem_id)," ...." 
+            print "Knapsack Loaded for Problem ", str(problem_id)," ....", '    Execution time: ', execTime, ' seconds' 
         knapsack_ok = checkCapacity(in_knapsack,knapsack_cap)
         knapsack_result = knapsack_value(in_knapsack)
         if silent_mode:
