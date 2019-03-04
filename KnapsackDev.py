@@ -3,10 +3,7 @@
 Spyder Editor
 """
 
-#import MySQLdb as mySQL
-#import pymysql as mySQL
 import mysql.connector as mySQL
-
 
 """ global MySQL settings """
 mysql_user_name = 'Jim'
