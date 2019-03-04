@@ -6,8 +6,8 @@ Spyder Editor
 import mysql.connector as mySQL
 
 """ global MySQL settings """
-mysql_user_name = 'Jim'
-mysql_password = 'MySQL'
+mysql_user_name = 'xxxx'
+mysql_password = 'xxxx'
 mysql_ip = '127.0.0.1'
 mysql_db = 'knapsack'
 
