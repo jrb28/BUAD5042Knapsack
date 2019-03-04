@@ -3,11 +3,14 @@
 Spyder Editor
 """
 
-import MySQLdb as mySQL
+#import MySQLdb as mySQL
+#import pymysql as mySQL
+import mysql.connector as mySQL
+
 
 """ global MySQL settings """
-mysql_user_name = 'my_username'
-mysql_password = 'my_password'
+mysql_user_name = 'Jim'
+mysql_password = 'MySQL'
 mysql_ip = '127.0.0.1'
 mysql_db = 'knapsack'
 
@@ -59,13 +62,16 @@ def load_knapsack(things,knapsack_cap):
     
     return my_team_number_or_name, items_to_pack       # use this return statement when you have items to load in the knapsack
 
-def getDBDataList(commandString):
+def getDBDataList():
     cnx = db_connect()
     cursor = cnx.cursor()
-    cursor.execute(commandString)
+    #cursor.execute(commandString)
+    cursor.callproc('spGetProblemIds')
     items = []
-    for item in list(cursor):
-        items.append(item[0])
+    for result in cursor.stored_results(): #list(cursor):
+        for item in result.fetchall():
+            items.append(item[0])
+        break
     cursor.close()
     cnx.close()
     return items
@@ -75,13 +81,18 @@ def db_get_data(problem_id):
     cnx = db_connect()
                         
     cursor = cnx.cursor()
-    cursor.execute("CALL spGetKnapsackCap(%s);" % problem_id)
-    knap_cap = cursor.fetchall()[0][0]
+    #cursor.execute("CALL spGetKnapsackCap(%s);" % problem_id,multi=True)
+    cursor.callproc("spGetKnapsackCap", args=[problem_id])
+    for result in cursor.stored_results():
+        knap_cap = result.fetchall()[0][0]
+        break
     cursor.close()
     cursor = cnx.cursor()
-    cursor.execute("CALL spGetKnapsackData(%s);" % problem_id)
+    cursor.callproc('spGetKnapsackData',args=[problem_id])
     items = {}
-    blank = cursor.fetchall()
+    for result in cursor.stored_results():
+        blank = result.fetchall()
+        break
     for row in blank:
         items[row[0]] = (row[1],row[2])
     cursor.close()
@@ -101,9 +112,10 @@ error_response_not_list = """
 load_knapsack() returned a response for items to be packed that was not a list.  Scoring will be terminated   """
 
 """ Get solutions bassed on sbmission """
-problems = getDBDataList('CALL spGetProblemIds();') 
+problems = getDBDataList() 
 silent_mode = False    # use this variable to turn on/off appropriate messaging depending on student or instructor use
 
+print('prob_list:',problems)
 for problem_id in problems:
     in_knapsack = {}
     knapsack_cap, items = db_get_data(problem_id)
@@ -111,6 +123,7 @@ for problem_id in problems:
     errors = False
     response = None
     
+    print('function')
     team_num, response = load_knapsack(items,knapsack_cap)
     if isinstance(response,list):
         for this_key in response:
