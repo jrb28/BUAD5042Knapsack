@@ -112,7 +112,7 @@ load_knapsack() returned a response for items to be packed that was not a list. 
 problems = getDBDataList() 
 silent_mode = False    # use this variable to turn on/off appropriate messaging depending on student or instructor use
 
-print('prob_list:',problems)
+print('Knapsack Problems to Solve:',problems)
 for problem_id in problems:
     in_knapsack = {}
     knapsack_cap, items = db_get_data(problem_id)
@@ -120,7 +120,7 @@ for problem_id in problems:
     errors = False
     response = None
     
-    print('function')
+    #print('function')
     team_num, response = load_knapsack(items,knapsack_cap)
     if isinstance(response,list):
         for this_key in response:
@@ -144,11 +144,10 @@ for problem_id in problems:
         if silent_mode:
             status = "P"+str(problem_id)+"knap_load_"
         else:
-            print("Knapsack Loaded for Problem ", str(problem_id)," ....")
+            print("Knapsack Problem ", str(problem_id)," ....")
         knapsack_ok = checkCapacity(in_knapsack,knapsack_cap)
         knapsack_result = knapsack_value(in_knapsack)
         if silent_mode:
             print(status+"; knapsack within capacity: "+knapsack_ok)
         else:
-            print("knapcap: ", knapsack_ok)
-            print("knapsack value : ", knapsack_value(in_knapsack))
+            print('Feasible?: ', knapsack_ok, '   Value : ', knapsack_value(in_knapsack))
