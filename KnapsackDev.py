@@ -84,6 +84,8 @@ def db_get_data(problem_id):
         knap_cap = result.fetchall()[0][0]
         break
     cursor.close()
+    cnx.close()
+    cnx = db_connect()
     cursor = cnx.cursor()
     cursor.callproc('spGetKnapsackData',args=[problem_id])
     items = {}
